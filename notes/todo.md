@@ -1,0 +1,5 @@
+# TODO
+
+* Custom actions to Call FHIR API - actions.py
+* Use Medacy instead of pretrained spacy pipeline for medical terms
+* FHIRForm integration
