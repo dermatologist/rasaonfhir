@@ -8,6 +8,8 @@ from rasa_sdk import Action
 from rasa_sdk.events import SlotSet, FollowupAction
 from rasa_sdk.forms import FormAction
 
+from collections import defaultdict
+
 # We use the medicare.gov database to find information about 3 different
 # healthcare facility types, given a city name, zip code or facility ID
 # the identifiers for each facility type is given by the medicare database
@@ -21,7 +23,24 @@ from rasa_sdk.forms import FormAction
 
 # Resource (Encounter) - parameter (subject) - qualifier (=) - value (585457)
 # http://hapi.fhir.org/baseR4/Encounter?subject=585457&&&
-ENDPOINT = "http://hapi.fhir.org/baseR4/{}?{}{}{}&{}{}{}&{}{}{}&{}{}{}"
+# ENDPOINT = "http://hapi.fhir.org/baseR4/{}?{}{}{}&{}{}{}&{}{}{}&{}{}{}"
+
+
+def _find_fhir_records(*args) -> List[Text]:
+    ENDPOINT = "http://hapi.fhir.org/baseR4/{0[fhir_resource]}?{0[search_param]}{0[search_qualifier]}{0[search_value]}&{0[search_param1]}{0[search_qualifier1]}{0[search_value1]}"
+    kwargs = {
+        'fhir_resource': args[0], 
+        'search_param': args[1], 
+        'search_qualifier': args[2], 
+        'search_value': args[3]
+    }
+    full_path = ENDPOINT.format(defaultdict(str, kwargs))
+    results = requests.get(full_path).json()
+    to_return = []
+    for entry in results['entry']:
+        print(entry['fullUrl']) 
+        to_return.append(entry['fullUrl'])
+    return to_return
 
 class SearchFhirEndpoint(Action):
     """This action class retrieves a FHIR bundle 
