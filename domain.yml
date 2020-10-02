@@ -6,26 +6,66 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - search_fhir
+  - inform
+
+entities:
+  - fhir_resource
+  - search_param
+  - search_qualifier
+  - search_value
+
+slots:
+  fhir_resource:
+    type: unfeaturized
+  search_param:
+    type: unfeaturized
+  search_qualifier:
+    type: unfeaturized
+  search_value:
+    type: unfeaturized
+
+forms:
+- fhir_search_form
+
+actions:
+- utter_noworries
+- utter_greet
+- utter_goodbye
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
+  - text: "Hi. What are you looking for?"
+  - text: "Hello! What can I help you find today?"
 
   utter_goodbye:
-  - text: "Bye"
+  - text: "Talk to you later!"
+  - text: "Have a good day."
+  - text: "Until next time!"
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  utter_noworries:
+  - text: "My pleasure."
+  - text: "You are welcome!"
+
+# responses:
+#   utter_greet:
+#   - text: "Hey! How are you?"
+
+#   utter_cheer_up:
+#   - text: "Here is something to cheer you up:"
+#     image: "https://i.imgur.com/nGF1K8f.jpg"
+
+#   utter_did_that_help:
+#   - text: "Did that help you?"
+
+#   utter_happy:
+#   - text: "Great, carry on!"
+
+#   utter_goodbye:
+#   - text: "Bye"
+
+#   utter_iamabot:
+#   - text: "I am a bot, powered by Rasa."
 
 session_config:
   session_expiration_time: 60
