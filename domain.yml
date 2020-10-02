@@ -6,6 +6,47 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - search_fhir
+  - inform
+
+entities:
+  - fhir_resource
+  - search_param
+  - search_qualifier
+  - search_value
+
+slots:
+  fhir_resource:
+    type: unfeaturized
+  search_param:
+    type: unfeaturized
+  search_qualifier:
+    type: unfeaturized
+  search_value:
+    type: unfeaturized
+
+forms:
+- fhir_search_form
+
+actions:
+- utter_noworries
+- utter_greet
+- utter_goodbye
+
+templates:
+  utter_greet:
+  - text: "Hi. What are you looking for?"
+  - text: "Hey there! Please choose one of the healthcare facility options:"
+  - text: "Hello! What can I help you find today?"
+
+  utter_goodbye:
+  - text: "Talk to you later!"
+  - text: "Have a good day."
+  - text: "Until next time!"
+
+  utter_noworries:
+  - text: "My pleasure."
+  - text: "You are welcome!"
 
 responses:
   utter_greet:
