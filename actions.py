@@ -35,6 +35,7 @@ def _find_fhir_records(*args) -> List:
         'search_value': args[3]
     }
     full_path = ENDPOINT.format(defaultdict(str, kwargs))
+    print(full_path) # for debugging
     results = requests.get(full_path).json()
     return results['entry']
     # to_return = []

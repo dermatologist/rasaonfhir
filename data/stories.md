@@ -1,6 +1,9 @@
 ## happy path
 * greet
   - utter_greet
-* mood_great
-  - utter_happy
-* search_fhir
+* inform
+  - fhir_search_form
+  - form{"name": "fhir_search_form"}
+  - form{"name": null}
+* goodbye
+  - utter_noworries
