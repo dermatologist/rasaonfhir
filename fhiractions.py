@@ -26,7 +26,7 @@ from collections import defaultdict
 # ENDPOINT = "http://hapi.fhir.org/baseR4/{}?{}{}{}&{}{}{}&{}{}{}&{}{}{}"
 
 
-def _find_fhir_records(*args) -> List[Text]:
+def _find_fhir_records(*args) -> List:
     ENDPOINT = "http://hapi.fhir.org/baseR4/{0[fhir_resource]}?{0[search_param]}{0[search_qualifier]}{0[search_value]}&{0[search_param1]}{0[search_qualifier1]}{0[search_value1]}"
     kwargs = {
         'fhir_resource': args[0], 
@@ -36,34 +36,88 @@ def _find_fhir_records(*args) -> List[Text]:
     }
     full_path = ENDPOINT.format(defaultdict(str, kwargs))
     results = requests.get(full_path).json()
-    to_return = []
-    for entry in results['entry']:
-        print(entry['fullUrl']) 
-        to_return.append(entry['fullUrl'])
-    return to_return
-
-class SearchFhirEndpoint(Action):
-    """This action class retrieves a FHIR bundle 
-    according to a search criteria."""
+    return results['entry']
+    # to_return = []
+    # for entry in results['entry']:
+    #     print(entry['fullUrl']) 
+    #     to_return.append(entry['fullUrl'])
+    # return to_return
+    
+class FhirSearchForm(FormAction):
+    """Custom form action to fill all slots required to find specific type
+    of resources on a FHIR server."""
 
     def name(self) -> Text:
-        """Unique identifier of the action"""
+        """Unique identifier of the form"""
 
-        return "search_fhir_endpoint"
+        return "fhir_search_form"
 
-    def run(self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict]:
+    @staticmethod
+    def required_slots(tracker: Tracker) -> List[Text]:
+        """A list of required slots that the form has to fill"""
 
-        fhir_resource = tracker.get_slot("fhir_resource")
-        search_param = tracker.get_slot("search_param")
-        search_qualifier = tracker.get_slot("search_qualifier")
-        search_value = tracker.get_slot("search_value")
-        full_path = ENDPOINT.format(fhir_resource, search_param, search_qualifier, search_value)
-        results = requests.get(full_path).json()
-        return results
-    
+        return ["fhir_resource", "search_param", "search_qualifier", "search_value"]
+
+    # slots are entities that need to be remembered.
+    # Shares the same name here and hence automatically mapped
+    # Can be mapped from multiple intents
+    # inform could be a single word intent common in many nlu
+    def slot_mappings(self) -> Dict[Text, Any]:
+        return {
+                "fhir_resource": self.from_entity(entity="fhir_resource",
+                                                  intent=["inform",
+                                                          "search_fhir"]),
+                "search_qualifier": self.from_entity(entity="search_qualifier",
+                                                  intent=["inform",
+                                                          "search_fhir"]),
+                "search_value": self.from_entity(entity="search_value",
+                                                  intent=["inform",
+                                                          "search_fhir"]),
+                "search_param": self.from_entity(entity="search_param",
+                                             intent=["inform",
+                                                     "search_fhir"])
+                }
+
+    def submit(self,
+               dispatcher: CollectingDispatcher,
+               tracker: Tracker,
+               domain: Dict[Text, Any]
+               ) -> List[Dict]:
+        """Once required slots are filled, print buttons for found resources"""
+
+        fhir_resource = tracker.get_slot('fhir_resource')
+        search_param = tracker.get_slot('search_param')
+        search_qualifier = tracker.get_slot('search_qualifier')
+        search_value = tracker.get_slot('search_value')
+
+        results = _find_fhir_records(fhir_resource,
+                                      search_param,
+                                      search_qualifier,
+                                      search_value)
+        button_name = "Resource"
+        if len(results) == 0:
+            dispatcher.utter_message(
+                "Sorry, we could not find a {}".format(button_name))
+            return []
+
+        buttons = []
+        # limit number of results to 3 for clear presentation purposes
+        for entry in results[:3]:
+            payload = entry['fullUrl']
+            buttons.append(
+                {"title": "{}".format(entry['id']), "payload": payload})
+
+        if len(buttons) == 1:
+            message = "Here is the resource {} you searched:".format(button_name)
+        else:
+            message = "Here are {} {}s near you:".format(len(buttons),
+                                                         button_name)
+
+        # TODO: update rasa core version for configurable `button_type`
+        dispatcher.utter_button_message(message, buttons)
+
+        return []
+
 
 
 
