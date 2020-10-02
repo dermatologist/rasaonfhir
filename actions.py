@@ -106,7 +106,7 @@ class FhirSearchForm(FormAction):
         for entry in results[:3]:
             payload = entry['fullUrl']
             buttons.append(
-                {"title": "{}".format(entry['id']), "payload": payload})
+                {"title": "{}".format(entry['resource']['id']), "payload": payload})
 
         if len(buttons) == 1:
             message = "Here is the resource {} you searched:".format(button_name)
@@ -114,6 +114,7 @@ class FhirSearchForm(FormAction):
             message = "Here are {} {}s near you:".format(len(buttons),
                                                          button_name)
 
+        print(buttons) # Debug
         # TODO: update rasa core version for configurable `button_type`
         dispatcher.utter_button_message(message, buttons)
 
