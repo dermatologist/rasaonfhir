@@ -5,7 +5,7 @@ from typing import Dict, Text, Any, List
 
 import requests
 from rasa_sdk import Action
-from rasa_sdk.events import SlotSet, FollowupAction
+from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
 from rasa_sdk.forms import FormAction
 
 from collections import defaultdict
@@ -26,7 +26,7 @@ from collections import defaultdict
 # ENDPOINT = "http://hapi.fhir.org/baseR4/{}?{}{}{}&{}{}{}&{}{}{}&{}{}{}"
 
 
-def _find_fhir_records(*args) -> List:
+def _find_fhir_records(*args) -> Dict:
     ENDPOINT = "http://hapi.fhir.org/baseR4/{0[fhir_resource]}?{0[search_param]}{0[search_qualifier]}{0[search_value]}&{0[search_param1]}{0[search_qualifier1]}{0[search_value1]}"
     kwargs = {
         'fhir_resource': args[0], 
@@ -37,7 +37,11 @@ def _find_fhir_records(*args) -> List:
     full_path = ENDPOINT.format(defaultdict(str, kwargs))
     print(full_path) # for debugging
     results = requests.get(full_path).json()
-    return results['entry']
+    # if entry key in results
+    if "entry" in results:
+        return results['entry']
+    else:
+        {}
     # to_return = []
     # for entry in results['entry']:
     #     print(entry['fullUrl']) 
@@ -96,10 +100,10 @@ class FhirSearchForm(FormAction):
                                       search_qualifier,
                                       search_value)
         button_name = "Resource"
-        if len(results) == 0:
+        if not results: # Results is an empty Dict
             dispatcher.utter_message(
                 "Sorry, we could not find a {}".format(button_name))
-            return []
+            return [AllSlotsReset()]
 
         buttons = []
         # limit number of results to 3 for clear presentation purposes
@@ -112,12 +116,12 @@ class FhirSearchForm(FormAction):
             message = "Here is the resource {} you searched:".format(button_name)
         else:
             message = "Here are {} {}s near you:".format(len(buttons),
-                                                         button_name)
+                                                        button_name)
 
         print(buttons) # Debug
         # TODO: update rasa core version for configurable `button_type`
         dispatcher.utter_button_message(message, buttons)
-
+        AllSlotsReset()
         return []
 
 
