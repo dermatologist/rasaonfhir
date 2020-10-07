@@ -14,6 +14,7 @@ entities:
   - search_param
   - search_qualifier
   - search_value
+  - search_results
 
 slots:
   fhir_resource:

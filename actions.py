@@ -94,13 +94,14 @@ class FhirSearchForm(FormAction):
         search_param = tracker.get_slot('search_param')
         search_qualifier = tracker.get_slot('search_qualifier')
         search_value = tracker.get_slot('search_value')
+        search_results = tracker.get_slot('search_results')
 
         results = _find_fhir_records(fhir_resource,
                                       search_param,
                                       search_qualifier,
                                       search_value)
         button_name = "Resource"
-        if not results: # Results is an empty Dict
+        if not results and not search_results: # Results is an empty Dict
             dispatcher.utter_message(
                 "Sorry, we could not find a {}".format(button_name))
             return [AllSlotsReset()]
@@ -121,8 +122,8 @@ class FhirSearchForm(FormAction):
         print(buttons) # Debug
         # TODO: update rasa core version for configurable `button_type`
         dispatcher.utter_button_message(message, buttons)
-        AllSlotsReset()
-        return []
+        # AllSlotsReset()
+        return [AllSlotsReset(), SlotSet("search_results", results)]
 
 
 
