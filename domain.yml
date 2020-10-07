@@ -47,6 +47,20 @@ responses:
   - text: "My pleasure."
   - text: "You are welcome!"
 
+  utter_ask_fhir_resource:
+  - text: "Which resource do you want to search?"
+  - text: "What to search?"
+
+  utter_ask_search_param:
+  - text: "Which parameter do you want to search?"
+  - text: "Based on?"
+
+  utter_ask_search_qualifier:
+  - text: "Equal to or something else?"
+  
+  utter_ask_search_value:
+  - text: "What do you want to look for?"
+
 # responses:
 #   utter_greet:
 #   - text: "Hey! How are you?"
