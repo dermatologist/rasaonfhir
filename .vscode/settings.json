@@ -1,0 +1,13 @@
+{
+    "python.pythonPath": "/home/bell/miniconda2/envs/py37/bin/python",
+    "licenser.license": "AL2",
+    "licenser.author": "Bell Eapen",
+    "licenser.projectName": "RASA ON FHIR",
+    "licenser.useSingleLineStyle": false,
+    "npm-intellisense.showBuildInLibs": true,
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true
+    }
+}
