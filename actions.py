@@ -133,10 +133,22 @@ class FhirSearchForm(FormAction):
 
         buttons = []
         # limit number of results to 3 for clear presentation purposes
-        for entry in results[:3]:
-            payload = entry['fullUrl']
-            buttons.append(
-                {"title": "{}".format(entry['resource']['id']), "payload": payload})
+
+
+        try:
+            for entry in results[:3]:
+                payload = entry['fullUrl']
+                buttons.append(
+                    {"title": "{}".format(entry['resource']['id']), "payload": payload})
+        except:
+            dispatcher.utter_message(
+                "Sorry, we could not find a {}".format(button_name))
+            return [AllSlotsReset()]
+            
+        if len(buttons) == 0:  # Results is an empty Dict
+            dispatcher.utter_message(
+                "Sorry, we could not find a {}".format(button_name))
+            return [AllSlotsReset()]
 
         if len(buttons) == 1:
             message = "Here is the resource {} you searched:".format(
