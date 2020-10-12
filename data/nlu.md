@@ -58,7 +58,8 @@
 ## intent:search_fhir
 - show me a [patient](fhir_resource)
 - show me the [patient](fhir_resource) with [id](search_param) [equals](search_qualifier) [23452](search_value)
-- show me the [encounter](fhir_resource) with [subject](search_param) [as](search_qualifier) [23452](search_value)
+- show me the [encounter](fhir_resource) with [subject](search_param) [as](search_qualifier) [7c248588-701c-4d91-9aa0-5307b2b06998](search_value)
+- show me the [observation](fhir_resource) with [subject](search_param) [as](search_qualifier) [7c248588-701c-4d91-9aa0-5307b2b06998](search_value)
 - bring me the [observation](fhir_resource) 
 
 ## intent:clear_search

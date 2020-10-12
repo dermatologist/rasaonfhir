@@ -142,11 +142,11 @@ class FhirSearchForm(FormAction):
             message = "Here is the resource {} you searched:".format(
                 button_name)
         else:
-            message = "Here are {} {}resources:".format(len(buttons),
+            message = "Here are {} {}s:".format(len(buttons),
                                                          button_name)
 
         print(buttons)  # Debug
         # TODO: update rasa core version for configurable `button_type`
-        dispatcher.utter_message(message, buttons)
+        dispatcher.utter_button_message(message, buttons)
         # AllSlotsReset()
         return [AllSlotsReset(), SlotSet("search_string", search_string), SlotSet("search_results", results)]
