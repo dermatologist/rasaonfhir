@@ -26,12 +26,6 @@ from rasa_sdk.forms import FormAction
 
 from collections import defaultdict
 
-# We use the medicare.gov database to find information about 3 different
-# healthcare facility types, given a city name, zip code or facility ID
-# the identifiers for each facility type is given by the medicare database
-# xubh-q36u is for hospitals
-# b27b-2uc7 is for nursing homes
-# 9wzi-peqs is for home health agencies
 
 # http://hapi.fhir.org/baseR4/Patient?_id=1271537
 # http://hapi.fhir.org/baseR4/Encounter?subject=94ed9c20-7f16-4e27-aa79-66c883fccd19
