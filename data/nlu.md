@@ -59,12 +59,19 @@
 - show me a [patient](fhir_resource)
 - show me the [patient](fhir_resource) with [id](search_param) [equals](search_qualifier) [23452](search_value)
 - show me the [encounter](fhir_resource) with [subject](search_param) [as](search_qualifier) [23452](search_value)
+- bring me the [observation](fhir_resource) 
+
+## intent:clear_search
+- clear my search
+- start over
+- search again
 
 ## intent:inform
 - [Patient](fhir_resource)
 - [subject](search_param)
 - [encounter](fhir_resource)
 - [visit](fhir_resource)
+- [observation](fhir_resource)
 
 ## synonym:=
 - equals
