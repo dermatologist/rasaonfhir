@@ -8,12 +8,14 @@ intents:
   - bot_challenge
   - search_fhir
   - inform
+  - clear_search
 
 entities:
   - fhir_resource
   - search_param
   - search_qualifier
   - search_value
+
 
 slots:
   fhir_resource:
@@ -24,6 +26,10 @@ slots:
     type: unfeaturized
   search_value:
     type: unfeaturized
+  search_results:
+    type: unfeaturized
+  search_string:
+    type: unfeaturized
 
 forms:
 - fhir_search_form
@@ -32,6 +38,7 @@ actions:
 - utter_noworries
 - utter_greet
 - utter_goodbye
+- clear_search_action
 
 responses:
   utter_greet:
@@ -46,6 +53,24 @@ responses:
   utter_noworries:
   - text: "My pleasure."
   - text: "You are welcome!"
+
+  utter_ask_fhir_resource:
+  - text: "Which resource do you want to search?"
+  - text: "What to search?"
+
+  utter_ask_search_param:
+  - text: "Which parameter do you want to search?"
+  - text: "Based on?"
+
+  utter_ask_search_qualifier:
+  - text: "Equal to or something else?"
+  
+  utter_ask_search_value:
+  - text: "What do you want to look for?"
+
+  utter_confirm:
+  - text: "Are you sure?"
+  - text: "Please confirm"
 
 # responses:
 #   utter_greet:
