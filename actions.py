@@ -128,10 +128,10 @@ class FhirSearchForm(FormAction):
         buttons = []
         # limit number of results to 3 for clear presentation purposes
 
-
+        # ! Somehow the payload gets set as the fhir_resource slot. Cannot figure out why!
         try:
             for entry in results[:3]:
-                payload = entry['fullUrl']
+                payload = entry['resource']['resourceType']
                 buttons.append(
                     {"title": "{}".format(entry['resource']['id']), "payload": payload})
         except:
@@ -154,5 +154,4 @@ class FhirSearchForm(FormAction):
         print(buttons)  # Debug
         # TODO: update rasa core version for configurable `button_type`
         dispatcher.utter_button_message(message, buttons)
-        # AllSlotsReset()
         return [AllSlotsReset(), SlotSet("search_string", search_string), SlotSet("search_results", results)]
