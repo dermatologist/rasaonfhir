@@ -11,6 +11,8 @@ This repository is a RASA project for **mapping conversations to FHIR search.** 
 
 This is experimental for now. Pull request, welcome!
 
+[Checkout a similar project using MS Bot Framework SDK](https://github.com/dermatologist/fhir-search-skill-bot)
+
 ## Author
 
 * [Bell Eapen](https://nuchange.ca) |  [Contact](https://nuchange.ca/contact) | [![Twitter Follow](https://img.shields.io/twitter/follow/beapen?style=social)](https://twitter.com/beapen)
